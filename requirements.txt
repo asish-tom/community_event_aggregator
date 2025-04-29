@@ -1,3 +1,21 @@
+# Web scraping and API
 requests
 beautifulsoup4
+python-dotenv
+
+# Data handling
 pandas
+
+# Database
+SQLAlchemy
+
+# Web framework for future dashboard
+Flask
+Flask-SQLAlchemy
+
+# Scheduling
+schedule
+
+# Testing
+pytest
+pytest-cov
