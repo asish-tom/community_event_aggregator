@@ -1,7 +1,7 @@
 # Community Event Aggregator
 
-[![Tests](https://github.com/USERNAME/community_event_aggregator/actions/workflows/test.yml/badge.svg)](https://github.com/USERNAME/community_event_aggregator/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/USERNAME/community_event_aggregator/branch/main/graph/badge.svg)](https://codecov.io/gh/USERNAME/community_event_aggregator)
+[![Tests](https://github.com/asish-tom/community_event_aggregator/actions/workflows/test.yml/badge.svg)](https://github.com/asish-tom/community_event_aggregator/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/asish-tom/community_event_aggregator/branch/main/graph/badge.svg)](https://codecov.io/gh/asish-tom/community_event_aggregator)
 
 A Python-based system that aggregates local community events from various online sources, filters them based on user preferences, and provides personalized notifications.
 
@@ -24,7 +24,7 @@ Currently supports:
 
 ```bash
 # Clone the repository
-git clone https://github.com/USERNAME/community_event_aggregator.git
+git clone https://github.com/asish-tom/community_event_aggregator.git
 cd community_event_aggregator
 
 # Create and activate virtual environment
