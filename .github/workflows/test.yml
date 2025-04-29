@@ -15,50 +15,35 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Required for coverage history
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'pip'  # Cache pip dependencies
+        cache: 'pip'
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest pytest-cov coverage[toml]
+        pip install pytest pytest-cov coverage
     
     - name: Run tests with coverage
       env:
         MEETUP_API_KEY: ${{ secrets.MEETUP_API_KEY || 'dummy_key' }}
         EVENTBRITE_API_KEY: ${{ secrets.EVENTBRITE_API_KEY || 'dummy_key' }}
       run: |
-        python -m pytest --cov=src --cov-report=xml --cov-report=term-missing --junitxml=test-results.xml
+        python -m pytest --cov=src --cov-report=xml --cov-report=term-missing
     
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - name: Upload coverage report
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      with:
-        files: ./coverage.xml
-        flags: unittests
-        name: codecov-${{ matrix.python-version }}
-        fail_ci_if_error: true
-        verbose: true
+      run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN} -f coverage.xml
     
-    - name: Upload test results
-      if: always()  # Upload test results even if tests fail
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results-${{ matrix.python-version }}
-        path: |
-          test-results.xml
-          coverage.xml
-        retention-days: 30
-    
-    - name: Coverage Report
+    - name: Coverage Summary
       run: |
         echo "Coverage Report:"
         python -m coverage report
