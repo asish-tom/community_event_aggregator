@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
     types: [ labeled, unlabeled, opened, reopened, synchronize ]
+  check_run:
+    types: [completed]
 
 permissions:
   contents: write
@@ -15,10 +17,14 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'ready-to-merge')
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'ready-to-merge') ||
+      (github.event_name == 'check_run' && github.event.check_run.conclusion == 'success')
     
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -31,6 +37,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest pytest-cov coverage
+    
+    - name: Check if PR is up to date
+      if: github.event_name == 'pull_request'
+      run: |
+        git fetch origin main
+        if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+          echo "PR needs to be updated with main"
+          gh pr comment "$PR_NUMBER" --body "⚠️ This PR needs to be updated with the latest main branch."
+          exit 1
+        fi
+      env:
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Run tests with coverage
       env:
@@ -59,6 +78,7 @@ jobs:
       if: success() && github.event_name == 'pull_request'
       run: |
         gh pr merge --auto --squash "$PR_NUMBER" --title="${{ github.event.pull_request.title }}" --body="${{ github.event.pull_request.body }}"
+        gh pr comment "$PR_NUMBER" --body "✅ Auto-merge enabled. PR will be merged once all checks pass."
       env:
         PR_NUMBER: ${{ github.event.pull_request.number }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,6 +89,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
