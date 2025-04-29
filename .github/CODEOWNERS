@@ -1,0 +1,25 @@
+# Default owners for everything in the repo
+* @asish-tom
+
+# Core models and services
+/src/models/ @asish-tom
+/src/services/ @asish-tom
+
+# Event sources
+/src/sources/ @asish-tom
+
+# Test files
+/tests/ @asish-tom
+
+# Configuration files
+/.github/workflows/ @asish-tom
+codecov.yml @asish-tom
+pytest.ini @asish-tom
+
+# Documentation
+*.md @asish-tom
+LICENSE @asish-tom
+
+# Environment and requirements
+requirements.txt @asish-tom
+.env.example @asish-tom
