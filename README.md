@@ -1,7 +1,7 @@
 # Community Event Aggregator
 
 [![Tests](../../actions/workflows/test.yml/badge.svg)](../../actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/USERNAME/community_event_aggregator/branch/main/graph/badge.svg)](https://codecov.io/gh/USERNAME/community_event_aggregator)
+[![codecov](https://codecov.io/gh/USERNAME/community_event_aggregator/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/USERNAME/community_event_aggregator)
 
 A Python-based system that aggregates local community events from various online sources, filters them based on user preferences, and provides personalized notifications.
 
@@ -81,9 +81,25 @@ The workflow:
 3. Runs tests with coverage
 4. Uploads coverage report to Codecov
 
+### Setting up Codecov
+
+1. Sign up for [Codecov](https://codecov.io) and add your repository
+2. Get your Codecov token from repository settings
+3. Add the token to your GitHub repository:
+   - Go to Settings > Secrets and variables > Actions
+   - Add new secret named `CODECOV_TOKEN`
+   - Paste your Codecov token as the value
+
+4. Update the Codecov badge in this README:
+   - Replace `USERNAME` with your GitHub username
+   - Replace `YOUR_TOKEN` with your Codecov repository upload token
+
 ## Project Structure
 
 ```
+├── .github/
+│   └── workflows/
+│       └── test.yml      # GitHub Actions workflow
 ├── src/
 │   ├── models/
 │   │   ├── event.py
